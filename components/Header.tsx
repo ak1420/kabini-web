@@ -13,7 +13,7 @@ const Header = () => {
 
     const navigationItems = [
         { name: "Solutions", href: "#solutions", section: "solutions" },
-        { name: "How It Works", href: "#how-it-works", section: "how-it-works" },
+        { name: "Pricing Plans", href: "#pricing", section: "pricing" },
         { name: "Testimonials", href: "#testimonials", section: "testimonials" },
         // { name: "Blog", href: "/blog" },
         // { name: "Contact", href: "/contact" }
