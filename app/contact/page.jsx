@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Input } from '../../components/ui/input';
 import { Textarea } from '../../components/ui/textarea';
 import { Label } from '../../components/ui/label';
-import { Button } from '../../components/ui/button.tsx';
+import { Button } from '../../components/ui/button';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 
@@ -32,38 +32,18 @@ export default function ContactPage() {
     setIsSubmitting(true);
     setSubmitStatus(null);
 
-    // Replace with your actual HubSpot Portal ID and Form GUID
-    const portalId = "244225778";
-    const formGuid = "d8ed421e-b73b-43e3-90b9-bf1eb26b554b";
-    const endpoint = `https://api.hsforms.com/submissions/v3/integration/submit/${portalId}/${formGuid}`;
-
-    // HubSpot expects fields in this format
-    const hubspotFields = [
-      { name: "firstname", value: formData.firstName },
-      { name: "lastname", value: formData.lastName },
-      { name: "email", value: formData.email },
-      { name: "website", value: formData.website },
-      { name: "message", value: formData.message }
-    ];
-
-    const payload = {
-      fields: hubspotFields,
-      context: {
-        pageUri: window.location.href,
-        pageName: document.title
-      }
-    };
-
     try {
-      const response = await fetch(endpoint, {
+      const response = await fetch('/api/contact', {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(formData)
       });
 
-      if (response.ok) {
+      const result = await response.json();
+
+      if (response.ok && result.success) {
         setSubmitStatus('success');
         setFormData({
           firstName: '',
@@ -73,9 +53,11 @@ export default function ContactPage() {
           message: ''
         });
       } else {
+        console.error('Form submission error:', result.error);
         setSubmitStatus('error');
       }
     } catch (error) {
+      console.error('Network error:', error);
       setSubmitStatus('error');
     } finally {
       setIsSubmitting(false);
@@ -97,7 +79,7 @@ export default function ContactPage() {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Contact Form */}
-            <div className="bg-white rounded-2xl hover:shadow-xl border border-grey-500/50 p-8">
+            <div className="bg-white rounded-2xl hover:shadow-xl border border-gray-500/50 p-8">
               <h2 className="text-2xl font-semibold text-gray-900 mb-6">Send us a message</h2>
 
               {submitStatus === 'success' && (
@@ -186,6 +168,8 @@ export default function ContactPage() {
                 <Button
                   type="submit"
                   disabled={isSubmitting}
+                  variant='default'
+                  size="lg"
                   className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg font-medium transition-colors"
                 >
                   {isSubmitting ? 'Sending...' : 'Send Message'}
@@ -195,24 +179,24 @@ export default function ContactPage() {
 
             {/* Contact Information */}
             <div className="space-y-8">
-              <div className="bg-white rounded-2xl border border-grey-500/50 p-8">
+              <div className="bg-white rounded-2xl border border-gray-500/50 p-8">
                 <h3 className="text-xl font-semibold text-gray-900 mb-6">Contact Information</h3>
 
                 <div className="space-y-4">
                   <a href='mailto:contact@kabini.ai' >
-                  <div className="flex items-start space-x-3 hover:border hover:border-blue-500/50 rounded-lg hover:bg-blue-100/40 p-4">
-                    <div className="flex-shrink-0 w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center mt-1">
-                      <svg className="w-8 h-8 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-                        <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-                      </svg>
+                    <div className="flex items-start space-x-3 hover:border hover:border-blue-500/50 rounded-lg hover:bg-blue-100/40 p-4">
+                      <div className="flex-shrink-0 w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center mt-1">
+                        <svg className="w-8 h-8 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                          <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                          <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                        </svg>
+                      </div>
+                      <div className='gap-1'>
+                        <p className="font-medium text-gray-900">Email</p>
+                        <p className="text-gray-600">contact@kabini.ai</p>
+                        <p className="text-gray-600">We'll respond within 24 hours</p>
+                      </div>
                     </div>
-                    <div className='gap-1'>
-                      <p className="font-medium text-gray-900">Email</p>
-                      <p className="text-gray-600">contact@kabini.ai</p>
-                      <p className="text-gray-600">We'll respond within 24 hours</p>
-                    </div>
-                  </div>
                   </a>
                   {/* 
                 <div className="flex items-start space-x-3">
