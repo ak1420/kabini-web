@@ -186,9 +186,10 @@ export default function ContactPage() {
                   <a href='mailto:contact@kabini.ai' >
                     <div className="flex items-start space-x-3 hover:border hover:border-blue-500/50 rounded-lg hover:bg-blue-100/40 p-4">
                       <div className="flex-shrink-0 w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center mt-1">
-                        <svg className="w-8 h-8 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-                          <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-                          <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                        <svg viewBox="0 0 24 24" width="24" height="24">
+                          <rect x="2" y="2" width="20" height="20" rx="6" ry="6" fill="#dbeafe"/>
+                          <rect x="6" y="8" width="12" height="8" rx="2" ry="2" fill="none" stroke="#2563eb" strokeWidth="2"/>
+                          <polyline points="18,9 12,13 6,9" fill="none" stroke="#2563eb" strokeWidth="2"/>
                         </svg>
                       </div>
                       <div className='gap-1'>
@@ -198,6 +199,7 @@ export default function ContactPage() {
                       </div>
                     </div>
                   </a>
+                  
                   {/* 
                 <div className="flex items-start space-x-3">
                   <div className="flex-shrink-0 w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center mt-1">

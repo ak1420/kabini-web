@@ -13,9 +13,9 @@ export async function POST(request) {
       );
     }
 
-    // HubSpot configuration
-    const portalId = "244225778";
-    const formGuid = "d8ed421e-b73b-43e3-90b9-bf1eb26b554b";
+    // HubSpot configuration (use env when provided, fallback to existing defaults)
+    const portalId = process.env.HUBSPOT_PORTAL_ID || "244225778";
+    const formGuid = process.env.HUBSPOT_FORM_ID || "d8ed421e-b73b-43e3-90b9-bf1eb26b554b";
     const endpoint = `https://api.hsforms.com/submissions/v3/integration/submit/${portalId}/${formGuid}`;
 
     // HubSpot expects fields in this format

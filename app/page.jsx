@@ -92,9 +92,9 @@ export default function HomePage() {
           <PricingCards />
         </section>
         <CTASection />
-        {/* <section id="how-it-works" aria-label="How Kabini.ai Works">
+        <section id="how-it-works" aria-label="How Kabini.ai Works">
           <HowItWorksSection />
-        </section> */}
+        </section>
         <section id="testimonials" aria-label="Customer Testimonials">
           <TestimonialsSection />
         </section>

@@ -63,6 +63,53 @@ export default function PostForm({ initial, onSaved, mode = 'create' }) {
     onSaved?.(form.slug);
   }
 
+  async function commitToGithub(e) {
+    e.preventDefault();
+    setLoading(true);
+    setMessage('');
+    try {
+      const payload = {
+        title: form.title,
+        slug: form.slug,
+        description: form.description,
+        date: form.date,
+        tags: form.tags,
+        coverImage: form.coverImage,
+        author: form.author,
+        draft: form.draft,
+        seoTitle: form.seoTitle,
+        seoDescription: form.seoDescription,
+        keywords: form.keywords,
+        socialImage: form.socialImage,
+        twitterCard: form.twitterCard,
+        canonicalUrl: form.canonicalUrl,
+        content: form.content,
+      };
+      const res = await fetch('/api/admin/github-commit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin',
+        body: JSON.stringify(payload),
+        cache: 'no-store'
+      });
+      setLoading(false);
+      if (res.status === 401) {
+        window.location.href = '/admin/login';
+        return;
+      }
+      const json = await res.json();
+      if (!res.ok) {
+        setMessage(`Commit failed: ${json.error || 'Unknown error'}`);
+        return;
+      }
+      setMessage('Committed to GitHub. Your site will rebuild on push.');
+      onSaved?.(form.slug);
+    } catch (err) {
+      setLoading(false);
+      setMessage(`Commit failed: ${String(err)}`);
+    }
+  }
+
   return (
     <form onSubmit={submit} className="space-y-8">
       <div className="rounded-lg border bg-white p-4">
@@ -141,7 +188,10 @@ export default function PostForm({ initial, onSaved, mode = 'create' }) {
         </div>
       </div>
       {message ? <p className="text-sm text-green-700">{message}</p> : null}
-      <UIButton type="submit" disabled={loading}>{loading ? 'Saving...' : 'Save Post'}</UIButton>
+      <div className="flex items-center gap-3">
+        <UIButton type="submit" disabled={loading}>{loading ? 'Saving...' : 'Save (DB)'}</UIButton>
+        <UIButton type="button" onClick={commitToGithub} disabled={loading} className="bg-blue-600 text-white hover:bg-blue-700">{loading ? 'Committing...' : 'Commit to GitHub'}</UIButton>
+      </div>
     </form>
   );
 }

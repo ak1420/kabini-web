@@ -1,4 +1,4 @@
-// File: C:\Users\AkashSharma\Documents\GitHub\webpage\kabini + Blogs\app\blog\layout.jsx
+// File: C:\Users\SatyaPinniti\Desktop\newsletter webpage\kabini-web\app\blog\layout.jsx
 import * as entry from '../../../../app/blog/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
